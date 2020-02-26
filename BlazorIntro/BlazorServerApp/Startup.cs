@@ -10,6 +10,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using BlazorServerApp.Data;
+using Blazor.Application.Providers;
+using Blazor.Application.Models;
+using Blazor.Application.Managers;
 
 namespace BlazorServerApp
 {
@@ -29,6 +32,9 @@ namespace BlazorServerApp
             services.AddRazorPages();
             services.AddServerSideBlazor();
             services.AddSingleton<WeatherForecastService>();
+        
+            services.AddScoped<IDataProvider<TodoItem>, InMemoryDataProvider<TodoItem>>();
+            services.AddScoped<ITodoManager, TodoManager>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

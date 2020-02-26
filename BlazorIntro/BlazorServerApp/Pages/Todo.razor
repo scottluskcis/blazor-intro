@@ -1,0 +1,76 @@
+﻿@page  "/todo"
+
+@using Blazor.Application.Models;
+@using Blazor.Application.Managers;
+
+@inject ITodoManager manager;
+
+@if (remainingItems == 0)
+{
+    <h1>
+        Todo
+    </h1>
+}
+else
+{
+    <h1>
+        Todo: <span class="badge badge-secondary">@remainingItems</span> remaining
+    </h1>
+}
+
+<div class="form-group">
+    <label for="todoItem">Todo Item</label>
+    <input type="text" class="form-control" id="todoItem" @bind="newTodo" />
+</div>
+<button class="btn btn-primary" @onclick="AddTodo">Add</button>
+
+<hr />
+
+<div class="list-group">
+    @foreach (var todo in todos)
+    {
+        <div class="list-group-item list-group-item-action">
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="@todo.IsDone" id="@todo.Id"
+                       @onclick="(() => ToggleDone(todo))" />
+                <label class="form-check-label" for="@todo.Id">
+                    @todo.Title
+                </label>
+            </div>
+        </div>
+    }
+</div>
+
+@code {
+
+    private IList<TodoItem> todos;
+    private string newTodo;
+    private int remainingItems;
+
+    protected override void OnInitialized()
+    {
+        Load();
+    }
+
+    private void AddTodo()
+    {
+        if (!string.IsNullOrWhiteSpace(newTodo))
+        {
+            manager.Add(new TodoItem { Title = newTodo });
+            Load();
+        }
+    }
+
+    private void ToggleDone(TodoItem todo)
+    {
+        manager.ToggleDone(todo);
+        Load();
+    }
+
+    private void Load()
+    {
+        todos = manager.GetAll();
+        remainingItems = todos.Count(c => !c.IsDone);
+        newTodo = string.Empty;
+    }
+}
