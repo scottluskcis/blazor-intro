@@ -1,0 +1,26 @@
+﻿@page "/ParentComponent"
+
+<h1>Parent-child example</h1>
+
+<ChildComponent Title="Panel Title from Parent"
+                OnClickCallback="@ShowMessage">
+    Content of the child component is supplied
+    by the parent component.
+</ChildComponent>
+
+@if(count > 0)
+{
+    <p>
+        Child button clicked @count  times
+    </p>
+}
+
+@code {
+
+    private int count  = 0;
+
+    private void ShowMessage()
+    {
+        count += 1;
+    }
+}

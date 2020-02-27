@@ -1,0 +1,21 @@
+﻿@page "/data-bind"
+@*<input @bind="CurrentValue" />*@
+<input @bind="CurrentValue" @bind:event="oninput" />
+
+<p>
+    @CurrentValue
+</p>
+
+@*<p>
+    <input type="text" @bind="_paragraphStyle" />
+</p>
+
+<p @bind-style="_paragraphStyle" @bind-style:event="onchange">
+    Blazorify the app!
+</p>*@
+
+@code {
+    private string CurrentValue { get; set; }
+
+    //private string _paragraphStyle = "color:red";
+}
